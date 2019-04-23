@@ -23,4 +23,7 @@
 hs_err_pid*
 
 #Sensitive information containing files
-DBConnection.java
+src/java/utils/DBConnection.java
+
+#build directory
+build/*
