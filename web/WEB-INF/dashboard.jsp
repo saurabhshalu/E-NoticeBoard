@@ -14,9 +14,19 @@
         <div id="mainContainerCss">
             <div id="mainContentCss" class="container text-light">
                 <br/>
-                <div class="col">
-                <%@include file="addnotice.jsp" %>
-                </div>
+                <%
+                    if(session.getAttribute("logintype")!=null && session.getAttribute("logintype").toString().equals("admin")) {
+                %>
+                        <%@include file="adminpanel.jsp" %>
+                <%        
+                    } else {
+                %>
+                    <div class="col">
+                    <%@include file="addnotice.jsp" %>
+                    </div>
+                <% 
+                    } 
+                %>
             </div>
         </div>
         <%@include file="footer.jsp" %>

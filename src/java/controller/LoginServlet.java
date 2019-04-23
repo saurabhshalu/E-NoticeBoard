@@ -49,31 +49,39 @@ public class LoginServlet extends HttpServlet {
 
             if(status.equals("success"))
             {
-                ResultSet info = null;
-                try {
-                    info = BasicDao.getLoggedInUserData(logintype, username);
-                    if(info.next()) {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("uniqueid",info.getString("uniqueid"));
-                        session.setAttribute("logintype", logintype);
-                        session.setAttribute("collegecode",info.getInt("collegecode"));
-                        if(logintype.equals("student")) {
-                            session.setAttribute("branchcode",info.getInt("branchcode"));
-                            session.setAttribute("semester",info.getInt("semester"));
+                HttpSession session = request.getSession();
+                if(logintype.equals("admin")) {
+                    session.setAttribute("uniqueid",username);
+                    session.setAttribute("logintype", logintype);
+                    out.print("success");
+                    return;
+                }
+                else {
+                    ResultSet info = null;
+                    try {
+                        info = BasicDao.getLoggedInUserData(logintype, username);
+                        if(info.next()) {
+                            session.setAttribute("uniqueid",info.getString("uniqueid"));
+                            session.setAttribute("logintype", logintype);
+                            session.setAttribute("collegecode",info.getInt("collegecode"));
+                            if(logintype.equals("student")) {
+                                session.setAttribute("branchcode",info.getInt("branchcode"));
+                                session.setAttribute("semester",info.getInt("semester"));
+                            }
+                            out.print("success");
+                            try { info.close(); } catch(SQLException e) { }
+                            return;
                         }
-                        out.print("success");
-                        try { info.close(); } catch(SQLException e) { }
-                        return;
+                        out.print("Something went wrong 1.0.--1");
+
+                    } catch (SQLException ex) {
+                        System.out.println(ex);
                     }
-                    out.print("Something went wrong 1.0.--1");
-                    
-                } catch (SQLException ex) {
-                    System.out.println(ex);
-                }
-                finally {
-                    try { info.close(); } catch(Exception e) { }
-                }
-                out.print("Something went wrong 1.0.1.x.0");
+                    finally {
+                        try { info.close(); } catch(Exception e) { }
+                    }
+                    out.print("Something went wrong 1.0.1.x.0"); 
+                }         
             }
             else {
                 out.print(status);
