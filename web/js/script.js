@@ -120,7 +120,7 @@ $(document).ready(function() {
                 },
                 success: function(response)
                 {
-                  hideLoginScreen();
+                  hideLoadingScreen();
                   if(response==="success")
                       window.location.href = "./dashboard";
                   else
