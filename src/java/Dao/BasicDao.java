@@ -237,12 +237,85 @@ public class BasicDao {
             return result;
         }
     }
+    public static String approvePrimeMember(String code) {
+        Connection con = DBConnection.createConnection();
+        try {
+            Statement s = con.createStatement();
+            int i = s.executeUpdate("update tblspecial set status='1' where id='" + code + "'");
+            if(i==1)
+                return "success";
+            else
+                return "error";
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return "error fatal";
+    }
+    public static String rejectPrimeMember(String code) {
+        Connection con = DBConnection.createConnection();
+        try {
+            Statement s = con.createStatement();
+            int i = s.executeUpdate("update tblspecial set status='-1' where id='" + code + "'");
+            if(i==1)
+                return "success";
+            else
+                return "error";
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return "error fatal";
+    }
+    public static String requestSpecialPermission(String uniqueid, int collegecode) {
+        Connection con = DBConnection.createConnection();
+        try {
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery("select * from tblspecial where uniqueid='" + uniqueid + "' and collegecode='" + collegecode + "'");
+            if(rs.next()) {
+                int status = rs.getInt(4);
+                try { rs.close(); } catch(Exception e) { }
+                try { s.close(); } catch(Exception e) { }
+                try { con.close(); } catch(Exception e) { }
+                if(status==1)
+                    return "you are already a prime user (success)";
+                else if(status==-1)
+                    return "request rejected by admin, please contact admin for solution";
+                else
+                    return "you have already requested";
+            }
+            else {
+                int i = s.executeUpdate("insert into tblspecial(uniqueid,collegecode,status) values('" + uniqueid + "', '" + collegecode + "', '0')");
+                try { rs.close(); } catch(Exception e) { }
+                try { s.close(); } catch(Exception e) { }
+                try { con.close(); } catch(Exception e) { }
+                if(i==1) {
+                    return "your request has been registered";
+                }
+                else{
+                    return "something bad happened, please take screenshot and report to admin";
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return "error";
+    }
+    
+    public static ResultSet getListOfPrimeRequest() {
+        Connection con = DBConnection.createConnection();
+        Statement s = null;
+        ResultSet rs = null;
+        try {
+            s = con.createStatement();
+            rs = s.executeQuery("select * from tblspecial where status='0'");
+        } catch (SQLException ex) {
+            Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally {
+            //try { s.close(); } catch(Exception e) { }
+            //try { con.close(); } catch(Exception e) { }
+            return rs;
+        }
+    }
 }
-
-
-
-
-
-
 
 

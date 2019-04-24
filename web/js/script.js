@@ -1,11 +1,34 @@
 $(document).ready(function() {
     $('.btnLogin').on('click',function() {
-        $('body').load('./?mode=login');
+        showLoadingScreen();
+        $('body').load('./?mode=login', function(response, status, http) {
+            hideLoadingScreen();
+        });
         //window.location.href = "./?mode=login";
     });
     $('.btnSignUp').on('click',function() {
-        $('body').load('./?mode=register');
+        showLoadingScreen();
+        $('body').load('./?mode=register', function(response, status, http) {
+            hideLoadingScreen();
+        });
+        
         //window.location.href = "./?mode=register";
+    });
+    $("#requestprime").on('click',function() {
+        showLoadingScreen();
+        $.ajax({
+            url: 'requestprime',
+            method: 'POST',
+            success: function(response) {
+                hideLoadingScreen();
+                showAlert(response);
+                if(response.includes("success"))
+                    location.reload();
+            },
+            error: function(data) {
+                hideLoadingScreen();
+            }
+        });
     });
 
     $('#btnSignIn').on('click', function() { 
@@ -17,6 +40,7 @@ $(document).ready(function() {
         else if(password.trim()==="")
             showError("Password is required");
         else {  
+            showLoadingScreen();
             $.ajax({
                 url: 'login',
                 method: 'POST',
@@ -27,10 +51,14 @@ $(document).ready(function() {
                 },
                 success: function(response)
                 {
+                  hideLoadingScreen();
                   if(response==="success")
                       window.location.href = "./dashboard";
                   else
                       showError(response);
+                },
+                error: function(data) {
+                    hideLoadingScreen();
                 }
             });
         }
@@ -73,6 +101,7 @@ $(document).ready(function() {
         else if(address.trim()==="")
             showError("Address field is required");
         else {
+            showLoadingScreen();
             $.ajax({
                 url: 'register',
                 method: 'POST',
@@ -91,10 +120,14 @@ $(document).ready(function() {
                 },
                 success: function(response)
                 {
+                  hideLoginScreen();
                   if(response==="success")
                       window.location.href = "./dashboard";
                   else
                       showError(response);
+                },
+                error: function(data) {
+                    hideLoadingScreen();
                 }
             });   
         }
@@ -124,7 +157,7 @@ $(document).ready(function() {
         formData.set("start_date",start_date);
         formData.set("end_date",end_date);
        
-        
+        showLoadingScreen();
         $.ajax({
             url: 'notice',
             method: 'post',
@@ -133,12 +166,14 @@ $(document).ready(function() {
             processData: false,
             data: formData,
             success: function(response) {
+                hideLoadingScreen();
                 if(response==="success")
                     window.location.href = "./dashboard";
                 else
                     showError(response);
             },
             error: function(response) {
+                hideLoadingScreen();
                 showError(response);
             }
         });
@@ -149,12 +184,58 @@ $(document).ready(function() {
         //$('.noticecontainer').load("previewnotice.jsp?id=" + id);    
         window.location.href = "./viewnotice?id=" + id;
     });
+    $('.btnapprove').on('click',function() {
+        var id = $(this).data('id');
+        var row = $(this).closest("tr");
+        showLoadingScreen();
+        $.ajax({
+            url: 'requestprime',
+            method: 'post',
+            data: {
+              approve: id
+            },
+            success: function(response) {
+                hideLoadingScreen();
+                if(response==="success")
+                    row.remove();//window.location.href = "./dashboard";
+                else
+                    showAlert(response);
+            },
+            error: function(response) {
+                hideLoadingScreen();
+                showAlert(response);
+            }
+        });
+    });
+    $('.btnreject').on('click',function() {
+        var id = $(this).data('id');
+        var row = $(this).closest("tr");
+        showLoadingScreen();
+        $.ajax({
+            url: 'requestprime',
+            method: 'post',
+            data: {
+              reject: id
+            },
+            success: function(response) {
+                hideLoadingScreen();
+                if(response==="success")
+                    row.remove();//window.location.href = "./dashboard";
+                else
+                    showAlert(response);
+            },
+            error: function(response) {
+                hideLoadingScreen();
+                showAlert(response);
+            }
+        });
+    });
+    
     
     function showError(x) {
         $('#error').html(x);
         $('#error').show();
     }
-    
     
     var mydate = new Date();
     var mydate2 = new Date();
@@ -163,4 +244,22 @@ $(document).ready(function() {
     
     $('#start_date').datepicker({format: 'dd-M-yyyy',autoclose: true, startDate: mydate}).datepicker('setDate', mydate); 
     $('#end_date').datepicker({format: 'dd-M-yyyy',autoclose: true, startDate: mydate}).datepicker('setDate', mydate2);
+
+
 });
+
+function showAlert(msg) {
+    var message = msg;
+    $('body').append("<div class='container'>"+
+                        "<div class='alert alert-danger alert-dismissible' id='custom-alert'>"+
+                        "<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a> "+
+                        message +
+                        "</div>" +
+                    "</div>");
+}
+function showLoadingScreen() {
+    $('#loader-overlay').show(); 
+}
+function hideLoadingScreen() {
+    $('#loader-overlay').hide(); 
+}

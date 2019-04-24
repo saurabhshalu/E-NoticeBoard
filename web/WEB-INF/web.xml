@@ -46,6 +46,10 @@
         <servlet-name>PreviewServlet</servlet-name>
         <servlet-class>controller.PreviewServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SpecialUserServlet</servlet-name>
+        <servlet-class>controller.SpecialUserServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -89,6 +93,10 @@
     <servlet-mapping>
         <servlet-name>PreviewServlet</servlet-name>
         <url-pattern>/viewnotice</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SpecialUserServlet</servlet-name>
+        <url-pattern>/requestprime</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
