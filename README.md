@@ -12,19 +12,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DBConnection {
-    public static Connection createConnection() {
-	Connection con = null;
-        String url = "jdbc:mysql://localhost:3306/databasename"; //MySQL URL and followed by the database name
-        String username = "username"; //MySQL username
-        String password = "password"; //MySQL password
+    public static Connection getMySQLConnection() {
+        String hostName = "localhost:3306";
+        String dbName = "dbnotice";
+        String userName = "root";
+        String password = "";
+        return getMySQLConnection(hostName,dbName,userName,password);
+    }
+    public static Connection getMySQLConnection(String hostName, String dbName, String userName, String password) {
+        Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection(url,username,password);
+            String connectionURL = "jdbc:mysql://" + hostName + "/" + dbName;
+            con = DriverManager.getConnection(connectionURL, userName, password);
         } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(DBConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         return con;
     }
 }
-
 #you are done!
