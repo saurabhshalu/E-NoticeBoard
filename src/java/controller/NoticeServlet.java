@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -18,10 +19,13 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import utils.MyUtils;
 public class NoticeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Connection con = MyUtils.getStoredConnection(request);
+        
         response.setHeader("Content-Type", "text/plain");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
@@ -75,7 +79,7 @@ public class NoticeServlet extends HttpServlet {
                         out.print("file size must not exceed 5MB");
                         return;
                     }
-                    filename = BasicDao.getFileName(uploadItem.getName(),collegecode,professorcode);
+                    filename = BasicDao.getFileName(con,uploadItem.getName(),collegecode,professorcode);
                     InputStream content = uploadItem.getInputStream();
                     
                     String fullpath = request.getServletContext().getRealPath("/allfiles/") + filename;
@@ -108,7 +112,7 @@ public class NoticeServlet extends HttpServlet {
                 out.print("select valid semester");
                 return;
             }
-            if(branchcode==null || branchcode.trim().equals("") || !BasicDao.isValidBranch(branchcode)) {
+            if(branchcode==null || branchcode.trim().equals("") || !BasicDao.isValidBranch(con,branchcode)) {
                 out.print("select valid branch");
                 return;
             }
@@ -140,7 +144,7 @@ public class NoticeServlet extends HttpServlet {
             bean.setProfessorCode(professorcode);
             
             NoticeDao dao = new NoticeDao();
-            String status = dao.submitNotice(bean);
+            String status = dao.submitNotice(con,bean);
             
             out.print(status);
             

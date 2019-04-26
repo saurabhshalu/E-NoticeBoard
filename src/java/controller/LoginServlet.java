@@ -5,6 +5,7 @@ import Dao.BasicDao;
 import Dao.LoginDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import utils.MyUtils;
 
 public class LoginServlet extends HttpServlet {
     @Override
@@ -24,6 +26,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Connection con = MyUtils.getStoredConnection(request);
         response.setHeader("Content-Type", "text/plane");
         PrintWriter out = response.getWriter();
         String username = request.getParameter("username");
@@ -45,7 +48,7 @@ public class LoginServlet extends HttpServlet {
             bean.setLoginType(logintype);
 
             LoginDao dao = new LoginDao();
-            String status = dao.authenticateUser(bean);
+            String status = dao.authenticateUser(con, bean);
 
             if(status.equals("success"))
             {
@@ -59,7 +62,7 @@ public class LoginServlet extends HttpServlet {
                 else {
                     ResultSet info = null;
                     try {
-                        info = BasicDao.getLoggedInUserData(logintype, username);
+                        info = BasicDao.getLoggedInUserData(con, logintype, username);
                         if(info.next()) {
                             session.setAttribute("uniqueid",info.getString("uniqueid"));
                             session.setAttribute("logintype", logintype);

@@ -1,3 +1,5 @@
+<%@page import="utils.MyUtils"%>
+<%@page import="java.sql.Connection"%>
 <%@page import="Dao.BasicDao"%>
 <%@page import="java.sql.ResultSet"%>
 <div class="noticecontainer">
@@ -35,7 +37,8 @@
                     <select id="branch" class="form-control">
                         <option selected disabled hidden value="0">Select branch</option>
                         <%
-                            ResultSet rs = BasicDao.getBranchList();
+                            Connection con = MyUtils.getStoredConnection(request);
+                            ResultSet rs = BasicDao.getBranchList(con);
                             if(rs!=null) {
                                 while(rs.next()) {
                                 %>  

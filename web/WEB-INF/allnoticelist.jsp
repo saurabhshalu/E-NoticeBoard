@@ -1,3 +1,7 @@
+<%@page import="java.util.List"%>
+<%@page import="Beans.NoticeBean"%>
+<%@page import="utils.MyUtils"%>
+<%@page import="java.sql.Connection"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="Dao.BasicDao"%>
 <div class="table-responsive">
@@ -21,20 +25,19 @@
                 collegecode = Integer.parseInt((String)session.getAttribute("collegecode").toString());
                 uniqueid = (String)session.getAttribute("uniqueid").toString();
                 
-                ResultSet noticelist = null;
-                
+                List<NoticeBean> noticelist = null;
+                Connection con = MyUtils.getStoredConnection(request);
                 if(logintype.equals("student"))
-                    noticelist = BasicDao.getCurrentStudentNotice(collegecode,semester,branchcode);
+                    noticelist = BasicDao.getCurrentStudentNotice(con,collegecode,semester,branchcode);
                 else
-                    noticelist = BasicDao.getCurrentTeacherNotice(collegecode,uniqueid,view);
+                    noticelist = BasicDao.getCurrentTeacherNotice(con,collegecode,uniqueid,view);
                 
-                while(noticelist.next()) {
-                    out.println("<tr data-id=" + noticelist.getInt(1) + " class='preview_data_id_notice'>");
+                for(NoticeBean item : noticelist) {
+                    out.println("<tr data-id=" + item.getId() + " class='preview_data_id_notice'>");
                     //out.println("<td>" + noticelist.getString(2) + " | <span style='color: red;'>" + noticelist.getDate(8) + " to " + noticelist.getString(9) + "</span> | " + "</td>");
-                    out.println("<td>" + noticelist.getString(2) + "</td>");
+                    out.println("<td>" + item.getTitle() + "</td>");
                     out.println("</tr>");
                 }
-                try { noticelist.close(); } catch(Exception e) { }
             %>
         </tbody>
     </table>

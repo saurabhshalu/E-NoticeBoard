@@ -1,20 +1,21 @@
 package Dao;
 
+import Beans.NoticeBean;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import utils.DBConnection;
 
 public class BasicDao {
-    public static ResultSet getBranchList() {
-        Connection con = DBConnection.createConnection();
+    public static ResultSet getBranchList(Connection con) {
         Statement s = null;
         ResultSet rs = null;
         try {
@@ -24,24 +25,24 @@ public class BasicDao {
             Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally {
+            //try { rs.close(); } catch(Exception e) { }
             //try { s.close(); } catch(Exception e) { }
-            //try { con.close(); } catch(Exception e) { }
             return rs;
         }    
     }
-    public static ResultSet getCollegeList() {
-        Connection con = DBConnection.createConnection();
+    public static ResultSet getCollegeList(Connection con) {
         Statement s = null;
         ResultSet rs = null;
         try {
             s = con.createStatement();
             rs = s.executeQuery("select * from tblcollege");
+            
         } catch (SQLException ex) {
             Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally {
+            //try { rs.close(); } catch(Exception e) { }
             //try { s.close(); } catch(Exception e) { }
-            //try { con.close(); } catch(Exception e) { }
             return rs;
         }
     }
@@ -100,8 +101,7 @@ public class BasicDao {
             return false;
         }
     }
-    public static boolean isValidBranch(String n) {
-        Connection con = DBConnection.createConnection();
+    public static boolean isValidBranch(Connection con, String n) {
         Statement s = null;
         ResultSet rs = null;
         boolean valid = false;
@@ -116,12 +116,10 @@ public class BasicDao {
         finally {
             try { rs.close(); } catch(Exception e) { }
             try { s.close(); } catch(Exception e) { }
-            try { con.close(); } catch(Exception e) { }
             return valid;
         }
     }
-    public static boolean isValidCollege(String n) {
-        Connection con = DBConnection.createConnection();
+    public static boolean isValidCollege(Connection con, String n) {
         Statement s = null;
         ResultSet rs = null;
         boolean valid = false;
@@ -136,13 +134,11 @@ public class BasicDao {
         finally {
             try { rs.close(); } catch(Exception e) { }
             try { s.close(); } catch(Exception e) { }
-            try { con.close(); } catch(Exception e) { }
             return valid;
         }
     }
     
-    public static ResultSet getLoggedInUserData(String logintype,String id) {
-        Connection con = DBConnection.createConnection();
+    public static ResultSet getLoggedInUserData(Connection con,String logintype,String id) {
         Statement s = null;
         ResultSet rs = null;
         try {
@@ -159,46 +155,76 @@ public class BasicDao {
         }
     }
     
-    public static ResultSet getCurrentTeacherNotice(int collegecode, String uniqueid, String view) {
-        Connection con = DBConnection.createConnection();
+    public static List<NoticeBean> getCurrentTeacherNotice(Connection con, int collegecode, String uniqueid, String view) {
         Statement s = null;
         ResultSet rs = null;
+        List<NoticeBean> list = new ArrayList<>();
         try {
             s = con.createStatement();
             if(view.equals("all"))
                 rs = s.executeQuery("select * from tblnotice where collegecode='"+collegecode+"' order by id desc");
             else
                 rs = s.executeQuery("select * from tblnotice where collegecode='"+collegecode+"' and professorcode='" + uniqueid +"' order by id desc");
+  
+            while(rs.next()) {
+                NoticeBean n = new NoticeBean();
+                n.setId(rs.getLong(1));
+                n.setTitle(rs.getString(2));
+                n.setBody(rs.getString(3));
+                n.setAttachment(rs.getString(4));
+                n.setSemester(rs.getString(5));
+                n.setBranch(rs.getString(6));
+                n.setCollege(rs.getString(7));
+                n.setStartDate(rs.getString(8));
+                n.setEndDate(rs.getString(9));
+                n.setProfessorCode(rs.getString(10));
+                list.add(n);
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally {
-            //try { s.close(); } catch(Exception e) { }
-            //try { con.close(); } catch(Exception e) { }
-            return rs;
+            try { rs.close(); } catch(Exception e) { }
+            try { s.close(); } catch(Exception e) { }
+            return list;
         }
     }
-    public static ResultSet getCurrentStudentNotice(int collegecode, int semester, int branchcode) {
-        Connection con = DBConnection.createConnection();
+    public static List<NoticeBean> getCurrentStudentNotice(Connection con, int collegecode, int semester, int branchcode) {
         Statement s = null;
         ResultSet rs = null;
+        List<NoticeBean> list = new ArrayList<>();
         try {
             s = con.createStatement();
             rs = s.executeQuery("select * from tblnotice where collegecode='"+collegecode+"' and branchcode='" + branchcode +"' and (semester='" + semester + "' or semester='0') order by id desc");
+            while(rs.next()) {
+                NoticeBean n = new NoticeBean();
+                n.setId(rs.getLong(1));
+                n.setTitle(rs.getString(2));
+                n.setBody(rs.getString(3));
+                n.setAttachment(rs.getString(4));
+                n.setSemester(rs.getString(5));
+                n.setBranch(rs.getString(6));
+                n.setCollege(rs.getString(7));
+                n.setStartDate(rs.getString(8));
+                n.setEndDate(rs.getString(9));
+                n.setProfessorCode(rs.getString(10));
+                list.add(n);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally {
-            //try { s.close(); } catch(Exception e) { }
-            //try { con.close(); } catch(Exception e) { }
-            return rs;
+            try { rs.close(); } catch(Exception e) { }
+            try { s.close(); } catch(Exception e) { }
+            return list;
         }
     }
     
-    public static ResultSet previewSelectedNotice(int noticeid,int collegecode, String logintype, int semester, int branchcode) {
-        Connection con = DBConnection.createConnection();
+    public static NoticeBean previewSelectedNotice(Connection con, int noticeid,int collegecode, String logintype, int semester, int branchcode) {
         Statement s = null;
         ResultSet rs = null;
+        NoticeBean current = new NoticeBean();
         try {
             s = con.createStatement();
             
@@ -207,18 +233,30 @@ public class BasicDao {
             else
                 rs = s.executeQuery("select * from tblnotice where id='" + noticeid + "' and collegecode='"+collegecode+"'");
             
+            while(rs.next()) {
+                current.setId(rs.getLong(1));
+                current.setTitle(rs.getString(2));
+                current.setBody(rs.getString(3));
+                current.setAttachment(rs.getString(4));
+                current.setSemester(rs.getString(5));
+                current.setBranch(rs.getString(6));
+                current.setCollege(rs.getString(7));
+                current.setStartDate(rs.getString(8));
+                current.setEndDate(rs.getString(9));
+                current.setProfessorCode(rs.getString(10));
+            }
+            
         } catch (SQLException ex) {
             Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally {
-            //try { s.close(); } catch(Exception e) { }
-            //try { con.close(); } catch(Exception e) { }
-            return rs;
+            try { rs.close(); } catch(Exception e) { }
+            try { s.close(); } catch(Exception e) { }
+            return current;
         }
     }
     
-    public static String getFileName(String filename, int collegeid, String userid) {
-        Connection con = DBConnection.createConnection();
+    public static String getFileName(Connection con, String filename, int collegeid, String userid) {
         Statement s = null;
         ResultSet rs = null;
         String result = null;
@@ -233,12 +271,10 @@ public class BasicDao {
         finally {
             try { rs.close(); } catch(Exception e) { }
             try { s.close(); } catch(Exception e) { }
-            try { con.close(); } catch(Exception e) { }
             return result;
         }
     }
-    public static String approvePrimeMember(String code) {
-        Connection con = DBConnection.createConnection();
+    public static String approvePrimeMember(Connection con, String code) { 
         try {
             Statement s = con.createStatement();
             int i = s.executeUpdate("update tblspecial set status='1' where id='" + code + "'");
@@ -251,8 +287,7 @@ public class BasicDao {
         }
         return "error fatal";
     }
-    public static String rejectPrimeMember(String code) {
-        Connection con = DBConnection.createConnection();
+    public static String rejectPrimeMember(Connection con, String code) {
         try {
             Statement s = con.createStatement();
             int i = s.executeUpdate("update tblspecial set status='-1' where id='" + code + "'");
@@ -265,8 +300,7 @@ public class BasicDao {
         }
         return "error fatal";
     }
-    public static String requestSpecialPermission(String uniqueid, int collegecode) {
-        Connection con = DBConnection.createConnection();
+    public static String requestSpecialPermission(Connection con, String uniqueid, int collegecode) {
         try {
             Statement s = con.createStatement();
             ResultSet rs = s.executeQuery("select * from tblspecial where uniqueid='" + uniqueid + "' and collegecode='" + collegecode + "'");
@@ -274,7 +308,6 @@ public class BasicDao {
                 int status = rs.getInt(4);
                 try { rs.close(); } catch(Exception e) { }
                 try { s.close(); } catch(Exception e) { }
-                try { con.close(); } catch(Exception e) { }
                 if(status==1)
                     return "you are already a prime user (success)";
                 else if(status==-1)
@@ -286,7 +319,6 @@ public class BasicDao {
                 int i = s.executeUpdate("insert into tblspecial(uniqueid,collegecode,status) values('" + uniqueid + "', '" + collegecode + "', '0')");
                 try { rs.close(); } catch(Exception e) { }
                 try { s.close(); } catch(Exception e) { }
-                try { con.close(); } catch(Exception e) { }
                 if(i==1) {
                     return "your request has been registered";
                 }
@@ -300,8 +332,7 @@ public class BasicDao {
         return "error";
     }
     
-    public static ResultSet getListOfPrimeRequest() {
-        Connection con = DBConnection.createConnection();
+    public static ResultSet getListOfPrimeRequest(Connection con) {
         Statement s = null;
         ResultSet rs = null;
         try {

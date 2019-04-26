@@ -1,3 +1,5 @@
+<%@page import="utils.MyUtils"%>
+<%@page import="java.sql.Connection"%>
 <%@page import="Dao.BasicDao"%>
 <%@page import="java.sql.ResultSet"%>
 <div class="Register">
@@ -25,8 +27,11 @@
                     <select id="branch" class="form-control">
                         <option selected disabled hidden value="0">Select branch</option>
                         <%
-                            ResultSet rs = BasicDao.getBranchList();
+                            Connection con = MyUtils.getStoredConnection(request);
+                            ResultSet rs = BasicDao.getBranchList(con);
+                            
                             if(rs!=null) {
+                                System.out.println("OMGGGGG");
                                 while(rs.next()) {
                                 %>  
                                 <option value="<%=rs.getInt(1)%>"><%=rs.getString(2)%></option>
@@ -54,7 +59,7 @@
                 <select id="college" class="form-control">
                     <option selected disabled hidden value="0">Select College</option>
                     <%
-                        ResultSet rs1 = BasicDao.getCollegeList();
+                        ResultSet rs1 = BasicDao.getCollegeList(con);
                         if(rs1!=null) {
                             while(rs1.next()) {
                             %>  

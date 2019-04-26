@@ -1,3 +1,5 @@
+<%@page import="utils.MyUtils"%>
+<%@page import="java.sql.Connection"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="Dao.BasicDao"%>
 <div class="row">
@@ -8,19 +10,20 @@
                 <tbody>
                     <%
                         String logintype1 = session.getAttribute("logintype").toString();
-                        ResultSet noticelist = null;
+                        ResultSet primelist = null;
 
                         if(logintype1.equals("admin"))
                         {
-                            noticelist = BasicDao.getListOfPrimeRequest();
-                            while(noticelist.next()) {
+                            Connection con = MyUtils.getStoredConnection(request);
+                            primelist = BasicDao.getListOfPrimeRequest(con);
+                            while(primelist.next()) {
                                 out.println("<tr>");
-                                out.println("<td>" + noticelist.getString(2) + " (college: " + noticelist.getString(3) + ")</td>");
-                                out.println("<td><button data-id=" + noticelist.getInt(1) + " style='height: 25px; margin: 0px; padding: 0px;' class='btn btn-success btnapprove'>APPROVE</button>");
-                                out.println("<button data-id=" + noticelist.getInt(1) + " style='height: 25px; margin: 0px; padding: 0px;' class='btn btn-danger btnreject'>REJECT</button></td>");
+                                out.println("<td>" + primelist.getString(2) + " (college: " + primelist.getString(3) + ")</td>");
+                                out.println("<td><button data-id=" + primelist.getInt(1) + " style='height: 25px; margin: 0px; padding: 0px;' class='btn btn-success btnapprove'>APPROVE</button>");
+                                out.println("<button data-id=" + primelist.getInt(1) + " style='height: 25px; margin: 0px; padding: 0px;' class='btn btn-danger btnreject'>REJECT</button></td>");
                                 out.println("</tr>");
                             }
-                            try { noticelist.close(); } catch(Exception e) { }
+                            try { primelist.close(); } catch(Exception e) { }
                         }
                     %>
                 </tbody>
