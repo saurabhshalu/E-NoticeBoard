@@ -5,6 +5,7 @@ import Dao.BasicDao;
 import Dao.LoginDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import utils.MyUtils;
 
 public class LoginServlet extends HttpServlet {
     @Override
@@ -24,6 +26,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        Connection con = MyUtils.getStoredConnection(request);
         response.setHeader("Content-Type", "text/plane");
         PrintWriter out = response.getWriter();
         String username = request.getParameter("username");
@@ -45,35 +48,43 @@ public class LoginServlet extends HttpServlet {
             bean.setLoginType(logintype);
 
             LoginDao dao = new LoginDao();
-            String status = dao.authenticateUser(bean);
+            String status = dao.authenticateUser(con, bean);
 
             if(status.equals("success"))
             {
-                ResultSet info = null;
-                try {
-                    info = BasicDao.getLoggedInUserData(logintype, username);
-                    if(info.next()) {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("uniqueid",info.getString("uniqueid"));
-                        session.setAttribute("logintype", logintype);
-                        session.setAttribute("collegecode",info.getInt("collegecode"));
-                        if(logintype.equals("student")) {
-                            session.setAttribute("branchcode",info.getInt("branchcode"));
-                            session.setAttribute("semester",info.getInt("semester"));
+                HttpSession session = request.getSession();
+                if(logintype.equals("admin")) {
+                    session.setAttribute("uniqueid",username);
+                    session.setAttribute("logintype", logintype);
+                    out.print("success");
+                    return;
+                }
+                else {
+                    ResultSet info = null;
+                    try {
+                        info = BasicDao.getLoggedInUserData(con, logintype, username);
+                        if(info.next()) {
+                            session.setAttribute("uniqueid",info.getString("uniqueid"));
+                            session.setAttribute("logintype", logintype);
+                            session.setAttribute("collegecode",info.getInt("collegecode"));
+                            if(logintype.equals("student")) {
+                                session.setAttribute("branchcode",info.getInt("branchcode"));
+                                session.setAttribute("semester",info.getInt("semester"));
+                            }
+                            out.print("success");
+                            try { info.close(); } catch(SQLException e) { }
+                            return;
                         }
-                        out.print("success");
-                        try { info.close(); } catch(SQLException e) { }
-                        return;
+                        out.print("Something went wrong 1.0.--1");
+
+                    } catch (SQLException ex) {
+                        System.out.println(ex);
                     }
-                    out.print("Something went wrong 1.0.--1");
-                    
-                } catch (SQLException ex) {
-                    System.out.println(ex);
-                }
-                finally {
-                    try { info.close(); } catch(Exception e) { }
-                }
-                out.print("Something went wrong 1.0.1.x.0");
+                    finally {
+                        try { info.close(); } catch(Exception e) { }
+                    }
+                    out.print("Something went wrong 1.0.1.x.0"); 
+                }         
             }
             else {
                 out.print(status);

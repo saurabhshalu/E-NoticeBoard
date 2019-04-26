@@ -1,6 +1,7 @@
 package Beans;
 
 public class NoticeBean {
+    private long id;
     private String title;
     private String body;
     private String attachment;
@@ -64,5 +65,11 @@ public class NoticeBean {
     }
     public void setProfessorCode(String t) {
         professorcode = t;
+    }
+    public void setId(long u) {
+        id = u;
+    }
+    public long getId() {
+        return id;
     }
 }

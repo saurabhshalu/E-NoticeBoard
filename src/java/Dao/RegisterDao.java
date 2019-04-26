@@ -10,8 +10,7 @@ import utils.DBConnection;
 import Beans.RegisterBean;
 
 public class RegisterDao {
-    public String registerStudent(RegisterBean registerbean) {
-        Connection con = null;
+    public String registerStudent(Connection con, RegisterBean registerbean) {
         PreparedStatement ps = null;
         PreparedStatement ps1 = null;
         ResultSet rs = null;
@@ -28,7 +27,6 @@ public class RegisterDao {
             String tblName = registerbean.getRegisterType();
             String collegecode = registerbean.getCollege();
             
-            con = DBConnection.createConnection();
             ps = con.prepareStatement("select * from " + tblName + " where uniqueid=?");
             
             ps.setString(1,enrollment);
@@ -64,11 +62,9 @@ public class RegisterDao {
             try { rs.close(); } catch(Exception e) { }
             try { ps.close(); } catch(Exception e) { }
             try { ps1.close(); } catch(Exception e) { }
-            try { con.close(); } catch(Exception e) { }
         }
     }
-    public String registerProfessor(RegisterBean registerbean) {
-        Connection con = null;
+    public String registerProfessor(Connection con, RegisterBean registerbean) {
         PreparedStatement ps = null;
         PreparedStatement ps1 = null;
         ResultSet rs = null;
@@ -82,8 +78,7 @@ public class RegisterDao {
             String address = registerbean.getAddress();
             String tblName = registerbean.getRegisterType();
             String collegecode = registerbean.getCollege();
-
-            con = DBConnection.createConnection();
+            
             ps = con.prepareStatement("select * from " + tblName + " where uniqueid=?");
             ps.setString(1,professorid);
             rs = ps.executeQuery();
@@ -116,7 +111,6 @@ public class RegisterDao {
             try { rs.close(); } catch(Exception e) { }
             try { ps.close(); } catch(Exception e) { }
             try { ps1.close(); } catch(Exception e) { }
-            try { con.close(); } catch(Exception e) { }
         }
     }
 }

@@ -1,3 +1,6 @@
+<%@page import="utils.MyUtils"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="Dao.BasicDao"%>
 <header>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
       <div class="container">
@@ -23,8 +26,19 @@
                     <%
                         if(session.getAttribute("logintype").equals("professor")) {
                     %>
-                    <li><a class="nav-link" href="viewnotice?id=all">View all notice</a></li>
-                    <li><a class="nav-link" href="#">Request Rights</a></li>
+                            <li><a class="nav-link" href="viewnotice?id=all">View all notice</a></li>
+                            <% 
+                            Connection con = MyUtils.getStoredConnection(request);
+                            if(!BasicDao.requestSpecialPermission(con,session.getAttribute("uniqueid").toString(), Integer.parseInt(session.getAttribute("collegecode").toString())).contains("success")) {%>
+                                <li><a class="nav-link" href="#" id="requestprime">Request Rights</a></li>
+                            <% 
+                            } else {
+                            %>
+                                <li><a class="nav-link" href="#" >Promote students</a></li>
+                            <% 
+                                }
+                            %>
+                    
                     <%        
                         } else {
                     %> 
@@ -49,3 +63,5 @@
       </div>
     </nav>
 </header>
+<!-- Including loading screen -->
+<%@include file="loader.html" %>

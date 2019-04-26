@@ -7,11 +7,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import utils.DBConnection;
 
 public class NoticeDao {
-     public String submitNotice(NoticeBean noticebean) {
-        Connection con = null;
+     public String submitNotice(Connection con, NoticeBean noticebean) {
         PreparedStatement ps= null;
          
         try {
@@ -26,8 +24,6 @@ public class NoticeDao {
             String professorcode = noticebean.getProfessorCode();
             Date s_date = new Date(start_date.getTime());
             Date e_date = new Date(end_date.getTime());
-            
-            con = DBConnection.createConnection();
             
             ps = con.prepareStatement("insert into tblnotice(title,body,attachment,semester,branchcode,collegecode,start_date,end_date,professorcode) VALUES(?,?,?,?,?,?,?,?,?)");
             ps.setString(1,title);
@@ -51,7 +47,6 @@ public class NoticeDao {
         }
         finally {
             try { ps.close(); } catch(Exception e) { }
-            try { con.close(); } catch(Exception e) { }
         }
         return "Error code (Dao:2.1)";
     }

@@ -5,6 +5,7 @@ import Dao.BasicDao;
 import Dao.RegisterDao;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -12,11 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import utils.MyUtils;
 
 public class RegisterServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        Connection con = MyUtils.getStoredConnection(request);
+        
         response.setHeader("Content-Type", "text/plain");
         PrintWriter out = response.getWriter();
         String username = request.getParameter("username");        
@@ -65,7 +70,7 @@ public class RegisterServlet extends HttpServlet {
                 branchcode = "";
                 semester = "";
             }
-            if(!BasicDao.isValidCollege(collegecode))
+            if(!BasicDao.isValidCollege(con, collegecode))
                 out.print("you will get nothing but failure v2.4");
             else {
                 RegisterBean bean = new RegisterBean();
@@ -85,15 +90,15 @@ public class RegisterServlet extends HttpServlet {
                 String status;
                 switch (registertype) {
                     case "student":
-                        if(!BasicDao.isValidBranch(branchcode) || !BasicDao.isValidSemester(semester))
+                        if(!BasicDao.isValidBranch(con, branchcode) || !BasicDao.isValidSemester(semester))
                         {
                             status="you will get nothing but failure v2.5";
                             break;
                         }
-                        status = dao.registerStudent(bean);
+                        status = dao.registerStudent(con, bean);
                         break;
                     case "professor":
-                        status = dao.registerProfessor(bean);
+                        status = dao.registerProfessor(con, bean);
                         break;
                     default:
                         status = "you will get nothing but failure v1.2";
@@ -103,7 +108,7 @@ public class RegisterServlet extends HttpServlet {
                 if(status.equals("success")) {
                     ResultSet info = null;
                     try {
-                        info = BasicDao.getLoggedInUserData(registertype, username);
+                        info = BasicDao.getLoggedInUserData(con, registertype, username);
                         if(info.next()) {
                             HttpSession session = request.getSession();
                             session.setAttribute("uniqueid",info.getString("uniqueid"));
