@@ -31,7 +31,6 @@
                             ResultSet rs = BasicDao.getBranchList(con);
                             
                             if(rs!=null) {
-                                System.out.println("OMGGGGG");
                                 while(rs.next()) {
                                 %>  
                                 <option value="<%=rs.getInt(1)%>"><%=rs.getString(2)%></option>

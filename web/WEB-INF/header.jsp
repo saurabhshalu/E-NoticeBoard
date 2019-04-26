@@ -53,7 +53,7 @@
             </li>
             <li class="nav-item">
               <% if(session.getAttribute("uniqueid")!=null) { %>
-                <a id="logout" class="nav-link" href="logout">Logout</a>
+                <a id="logout" class="nav-link" href="#">Logout</a>
               <% } else { %>
               <a id="login" class="btnLogin nav-link" href="#">Login</a>
               <% }%>

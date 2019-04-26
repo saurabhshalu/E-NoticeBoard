@@ -224,7 +224,7 @@ public class BasicDao {
     public static NoticeBean previewSelectedNotice(Connection con, int noticeid,int collegecode, String logintype, int semester, int branchcode) {
         Statement s = null;
         ResultSet rs = null;
-        NoticeBean current = new NoticeBean();
+        NoticeBean current = null;
         try {
             s = con.createStatement();
             
@@ -234,6 +234,7 @@ public class BasicDao {
                 rs = s.executeQuery("select * from tblnotice where id='" + noticeid + "' and collegecode='"+collegecode+"'");
             
             while(rs.next()) {
+                current = new NoticeBean();
                 current.setId(rs.getLong(1));
                 current.setTitle(rs.getString(2));
                 current.setBody(rs.getString(3));

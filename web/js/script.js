@@ -1,4 +1,13 @@
 $(document).ready(function() {
+    $('#logout').on('click',function() {
+        $.ajax({
+            url: 'logout',
+            method: 'GET',
+            success: function(res) {
+                    location.href = "./";
+            }
+        });
+    });
     $('.btnLogin').on('click',function() {
         showLoadingScreen();
         $('body').load('./?mode=login', function(response, status, http) {
@@ -51,11 +60,14 @@ $(document).ready(function() {
                 },
                 success: function(response)
                 {
-                  hideLoadingScreen();
+                  //hideLoadingScreen();
                   if(response==="success")
                       window.location.href = "./dashboard";
                   else
+                  {
+                      hideLoadingScreen();
                       showError(response);
+                  }
                 },
                 error: function(data) {
                     hideLoadingScreen();
@@ -120,11 +132,14 @@ $(document).ready(function() {
                 },
                 success: function(response)
                 {
-                  hideLoadingScreen();
-                  if(response==="success")
-                      window.location.href = "./dashboard";
-                  else
-                      showError(response);
+                  //hideLoadingScreen();
+                    if(response==="success")
+                        window.location.href = "./dashboard";
+                    else
+                    {
+                        hideLoadingScreen();
+                        showError(response);
+                    }
                 },
                 error: function(data) {
                     hideLoadingScreen();
@@ -166,11 +181,14 @@ $(document).ready(function() {
             processData: false,
             data: formData,
             success: function(response) {
-                hideLoadingScreen();
+                //hideLoadingScreen();
                 if(response==="success")
                     window.location.href = "./dashboard";
                 else
+                {
+                    hideLoadingScreen();
                     showError(response);
+                }
             },
             error: function(response) {
                 hideLoadingScreen();

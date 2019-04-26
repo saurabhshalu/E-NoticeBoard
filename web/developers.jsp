@@ -14,7 +14,6 @@
     </head>
     <body>
         <%@include file="WEB-INF/header.jsp" %>
-                
         <div id="mainContainerCss">
             <div id="mainContentCss" class="container text-light">
                 <div align="center" class="cards">

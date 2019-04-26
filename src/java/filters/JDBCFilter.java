@@ -62,6 +62,7 @@ public class JDBCFilter implements Filter {
                 throw new ServletException();
             } finally {
                 ConnectionUtils.closeQuietly(conn);
+                System.out.println("connection closed");
             }
         }
         // With commons requests (images, css, html, ..)
@@ -85,9 +86,22 @@ public class JDBCFilter implements Filter {
         // 
         // => /spath
         String servletPath = request.getServletPath();
+        
+        switch(servletPath) {
+            case "/index.jsp":
+                return (request.getParameter("mode") != null && request.getParameter("mode").equals("register"));
+            case "/developers":
+                return false;
+            case "/logout":
+                return false;
+            default:
+                break;
+        }
+        
+        if(servletPath.equals("/index.jsp") && request.getParameter("mode") != null && request.getParameter("mode").equals("register"))
+            System.out.println("REQUEST: >> " + servletPath);
         // => /abc/mnp
         String pathInfo = request.getPathInfo();
-        System.out.println("REQUEST: >> " + pathInfo);
         String urlPattern = servletPath;
  
         if (pathInfo != null) {

@@ -14,10 +14,8 @@ public class PreviewServlet extends HttpServlet {
         RequestDispatcher rd = null;
         try {
             String id = request.getParameter("id");
-            if(id.equals("all") && request.getSession().getAttribute("logintype").toString().equals("professor"))
-            {
+            if(id!=null && id.equals("all") && request.getSession().getAttribute("logintype").toString().equals("professor"))
                 rd = request.getRequestDispatcher("./WEB-INF/allnoticetemplate.jsp");
-            }
             else
                 rd = request.getRequestDispatcher("./WEB-INF/previewnotice.jsp?id=" + Integer.parseInt(id));
         } catch(Exception e) {
