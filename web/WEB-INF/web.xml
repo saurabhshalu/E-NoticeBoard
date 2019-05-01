@@ -58,6 +58,18 @@
         <servlet-name>SpecialUserServlet</servlet-name>
         <servlet-class>controller.SpecialUserServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StudentFilterServlet</servlet-name>
+        <servlet-class>controller.StudentFilterServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PromoteStudentServlet</servlet-name>
+        <servlet-class>controller.PromoteStudentServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PromotionServlet</servlet-name>
+        <servlet-class>controller.PromotionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -105,6 +117,18 @@
     <servlet-mapping>
         <servlet-name>SpecialUserServlet</servlet-name>
         <url-pattern>/requestprime</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StudentFilterServlet</servlet-name>
+        <url-pattern>/filterstudent</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PromoteStudentServlet</servlet-name>
+        <url-pattern>/promotestudents</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PromotionServlet</servlet-name>
+        <url-pattern>/promotion</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -1,23 +1,26 @@
 $(document).ready(function() {
+    $('#menuPromote').on('click',function(){
+       $('.noticecontainer').load("./promotion");
+    });
     $('#logout').on('click',function() {
         $.ajax({
             url: 'logout',
             method: 'GET',
-            success: function(res) {
+            success: function() {
                     location.href = "./";
             }
         });
     });
     $('.btnLogin').on('click',function() {
         showLoadingScreen();
-        $('body').load('./?mode=login', function(response, status, http) {
+        $('body').load('./?mode=login', function() {
             hideLoadingScreen();
         });
         //window.location.href = "./?mode=login";
     });
     $('.btnSignUp').on('click',function() {
         showLoadingScreen();
-        $('body').load('./?mode=register', function(response, status, http) {
+        $('body').load('./?mode=register', function() {
             hideLoadingScreen();
         });
         
@@ -34,7 +37,7 @@ $(document).ready(function() {
                 if(response.includes("success"))
                     location.reload();
             },
-            error: function(data) {
+            error: function() {
                 hideLoadingScreen();
             }
         });
@@ -69,7 +72,7 @@ $(document).ready(function() {
                       showError(response);
                   }
                 },
-                error: function(data) {
+                error: function() {
                     hideLoadingScreen();
                 }
             });
@@ -141,7 +144,7 @@ $(document).ready(function() {
                         showError(response);
                     }
                 },
-                error: function(data) {
+                error: function() {
                     hideLoadingScreen();
                 }
             });   
@@ -280,4 +283,80 @@ function showLoadingScreen() {
 }
 function hideLoadingScreen() {
     $('#loader-overlay').hide(); 
+}
+
+function checkAll() {
+    var query = document.getElementById("btnCheckUncheck");
+    var items = document.getElementsByName("chkStudentSelect");
+    if(items.length>0) {
+        if(query.value === "Select All") {
+            for(var i = 0; i<items.length;i++) {
+                items[i].checked = true;
+            }
+            query.value = "Unselect All";
+        }
+        else {
+            for(var i = 0; i<items.length;i++) {
+                items[i].checked = false;
+            } 
+            query.value = "Select All";
+        }
+    }
+}
+
+function promoteToNextSemester() {
+    var items = document.getElementsByName("chkStudentSelect");
+    var selectedStudents = [];
+    if(items.length>0) {
+        for(var i = 0; i<items.length;i++) {
+            if(items[i].checked === true) {
+                selectedStudents.push("'" + items[i].value + "'");
+            }
+        }
+        if(selectedStudents.length>0) {
+            showLoadingScreen();
+            $.ajax({
+                url: 'promotestudents',
+                method: 'POST',
+                data: {
+                    selectedStudents: selectedStudents.toString()
+                },
+                success: function(response) {
+                    hideLoadingScreen();
+                    if(response==="success")
+                    {
+                        $('td input:checked').closest('tr').remove();
+                    }
+                    else
+                        showAlert(response);
+                },
+                error: function() {
+                    hideLoadingScreen();
+                }
+            });
+        }
+    }
+}
+
+function filterStudent() {
+    var branch = $('#branch').val();
+    var semester = $('#semester').val();    
+    if(branch===null || semester===null) {
+        showAlert("Please select valid branch and semester");
+    }
+    else {
+       showLoadingScreen();
+       $.ajax({
+            url: 'filterstudent',
+            method: 'POST',
+            data: {
+              branch: branch,
+              semester: semester
+            },
+            success: function(res) {
+                $("#promotionList").html(res);
+                hideLoadingScreen();
+            }
+        }); 
+    }
 }

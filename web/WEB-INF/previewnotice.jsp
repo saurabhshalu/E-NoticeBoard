@@ -41,13 +41,12 @@
                         }
                         
                         if(isValid==true && currentnotice!=null) {
-                            System.out.println("HERE YOU GO: " + currentnotice.getTitle());
                     %>
                         <section class="card noticecard">
                             <h2 class="cardblack"><%=currentnotice.getTitle()%></h2>
                             <p class="cardtitle"><%=currentnotice.getBody()%></p>
                             <p class="cardblack">Semester: <%=Integer.parseInt(currentnotice.getSemester())==0?"ALL":currentnotice.getSemester()%> (branchcode: <%=String.format("%02d", Integer.parseInt(currentnotice.getBranch()))%>)</p>
-                            <p class="cardtitle">(<%=new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(currentnotice.getStartDate()))%> to <%=new SimpleDateFormat("yyyy-MM-dd").format(new SimpleDateFormat("yyyy-MM-dd").parse(currentnotice.getEndDate()))%>)</p>
+                            <p class="cardtitle">(<%=new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(currentnotice.getStartDate()))%> to <%=new SimpleDateFormat("dd-MM-yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(currentnotice.getEndDate()))%>)</p>
                             <%
                                 if(!currentnotice.getAttachment().equals("")) {
                                     session.setAttribute("attachment", currentnotice.getAttachment());

@@ -89,7 +89,8 @@ public class JDBCFilter implements Filter {
         
         switch(servletPath) {
             case "/index.jsp":
-                return (request.getParameter("mode") != null && request.getParameter("mode").equals("register"));
+                return true;
+                //return (request.getParameter("mode") != null && request.getParameter("mode").equals("register"));
             case "/developers":
                 return false;
             case "/logout":

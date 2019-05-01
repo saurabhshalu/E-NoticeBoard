@@ -34,7 +34,7 @@
                             <% 
                             } else {
                             %>
-                                <li><a class="nav-link" href="#" >Promote students</a></li>
+                                <li><a class="nav-link" href="#" id="menuPromote" >Promote students</a></li>
                             <% 
                                 }
                             %>

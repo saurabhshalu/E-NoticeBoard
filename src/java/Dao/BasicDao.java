@@ -31,18 +31,28 @@ public class BasicDao {
         }    
     }
     public static ResultSet getCollegeList(Connection con) {
-        Statement s = null;
         ResultSet rs = null;
         try {
-            s = con.createStatement();
+            Statement s = con.createStatement();
             rs = s.executeQuery("select * from tblcollege");
-            
         } catch (SQLException ex) {
             Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         finally {
             //try { rs.close(); } catch(Exception e) { }
             //try { s.close(); } catch(Exception e) { }
+            return rs;
+        }
+    }
+    public static ResultSet FilterStudent(Connection con, String semester, String branch, String college) {
+        ResultSet rs = null;
+        try {
+            Statement s = con.createStatement();
+            rs = s.executeQuery("select * from tblstudent where semester='" + semester + "' and branchcode='" + branch + "' and collegecode='" + college + "'");
+        } catch (SQLException ex) {
+            Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally {
             return rs;
         }
     }
@@ -162,9 +172,9 @@ public class BasicDao {
         try {
             s = con.createStatement();
             if(view.equals("all"))
-                rs = s.executeQuery("select * from tblnotice where collegecode='"+collegecode+"' order by id desc");
+                rs = s.executeQuery("select * from tblnotice where collegecode='"+collegecode+"' and DATE(end_date)>=DATE(NOW()) order by id desc");
             else
-                rs = s.executeQuery("select * from tblnotice where collegecode='"+collegecode+"' and professorcode='" + uniqueid +"' order by id desc");
+                rs = s.executeQuery("select * from tblnotice where collegecode='"+collegecode+"' and professorcode='" + uniqueid +"' and DATE(end_date)>=DATE(NOW()) order by id desc");
   
             while(rs.next()) {
                 NoticeBean n = new NoticeBean();
@@ -196,7 +206,8 @@ public class BasicDao {
         List<NoticeBean> list = new ArrayList<>();
         try {
             s = con.createStatement();
-            rs = s.executeQuery("select * from tblnotice where collegecode='"+collegecode+"' and branchcode='" + branchcode +"' and (semester='" + semester + "' or semester='0') order by id desc");
+            rs = s.executeQuery("select * from tblnotice where collegecode='"+collegecode+"' and branchcode='" + branchcode +"' and (semester='" + semester + "' or semester='0') and DATE(start_date)<=DATE(NOW()) and DATE(end_date)>=DATE(NOW()) order by id desc");
+            
             while(rs.next()) {
                 NoticeBean n = new NoticeBean();
                 n.setId(rs.getLong(1));
@@ -229,9 +240,9 @@ public class BasicDao {
             s = con.createStatement();
             
             if(logintype.equals("student"))
-                rs = s.executeQuery("select * from tblnotice where id='" + noticeid + "' and collegecode='"+collegecode+"'  and branchcode='" + branchcode +"' and (semester='" + semester + "' or semester='0')");
+                rs = s.executeQuery("select * from tblnotice where id='" + noticeid + "' and collegecode='"+collegecode+"'  and branchcode='" + branchcode +"' and (semester='" + semester + "' or semester='0') and DATE(start_date)<=DATE(NOW()) and DATE(end_date)>=DATE(NOW())");
             else
-                rs = s.executeQuery("select * from tblnotice where id='" + noticeid + "' and collegecode='"+collegecode+"'");
+                rs = s.executeQuery("select * from tblnotice where id='" + noticeid + "' and collegecode='"+collegecode+"'  and DATE(end_date)>=DATE(NOW())");
             
             while(rs.next()) {
                 current = new NoticeBean();
@@ -346,6 +357,22 @@ public class BasicDao {
             //try { s.close(); } catch(Exception e) { }
             //try { con.close(); } catch(Exception e) { }
             return rs;
+        }
+    }
+    
+    public static int promoteSelectedStudent(Connection con, String list, String collegecode) {
+        Statement s = null;
+        int rows = -1;
+        try {
+            s = con.createStatement();
+            rows = s.executeUpdate("update tblStudent SET semester = semester+1 WHERE uniqueid IN ("+ list +") AND collegecode='" + collegecode + "'");
+        } catch (SQLException ex) {
+            Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally {
+            try { s.close(); } catch(Exception e) { }
+            //try { con.close(); } catch(Exception e) { }
+            return rows;
         }
     }
 }
