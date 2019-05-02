@@ -20,7 +20,7 @@
         <%@include file="header.jsp" %>
         <div id="mainContainerCss">
             <div id="mainContentCss" class="container text-light">
-                <div align="center" class="cards">
+                <div align="center" class="cards noticecontainer">
                     <%
                         int id = Integer.parseInt(request.getParameter("id")==null?"-999":request.getParameter("id"));
                         boolean isValid = false;
@@ -57,7 +57,7 @@
                                 }
                                 if(session.getAttribute("uniqueid").toString().equals(currentnotice.getProfessorCode())) {
                             %>
-                            <p><button class="cardbutton" onclick="window.history.go(-1); return false;">Delete</button></p>
+                            <p><button class="cardbutton delete_data_id_notice" data-id="<%=id%>">Delete</button></p>
                             <% } else { %>
                                 <p class="cardtitle">submitted by (<%=currentnotice.getProfessorCode()%>)</p>
                             <%}%>
@@ -67,7 +67,7 @@
                         } else {
                     %>
                         <section class="card">
-                            <img class="card_img" src="${pageContext.request.contextPath}/img/404_1.jpg" alt="404" style="width:100%">
+                            <img class="card_img" src="${pageContext.request.contextPath}/allfiles/404.jpg" alt="404" style="width:100%">
                             <h2 class="cardblack">Awww...Don't cry</h2>
                             <p class="cardtitle">It's just a 404 error</p>
                             <p class="cardblack">What you are looking for may have been misplaced in Long term memory</p>

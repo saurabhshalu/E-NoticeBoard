@@ -231,7 +231,26 @@ public class BasicDao {
             return list;
         }
     }
-    
+    public static boolean deleteSelectedNotice(Connection con, String deleteid,String collegecode, String logintype, String professorcode) {
+        Statement s = null;
+        boolean status = false;
+        try {
+            s = con.createStatement();
+            if(logintype.equals("professor"))
+            {
+                String sqlstring = "DELETE FROM tblnotice WHERE id='" + deleteid + "' and collegecode='"+collegecode+"' and professorcode='" + professorcode + "'";
+                int x = s.executeUpdate(sqlstring);
+                if(x==1)
+                    status = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally {
+            try { s.close(); } catch(Exception e) { }
+            return status;
+        }
+    }
     public static NoticeBean previewSelectedNotice(Connection con, int noticeid,int collegecode, String logintype, int semester, int branchcode) {
         Statement s = null;
         ResultSet rs = null;
@@ -277,6 +296,8 @@ public class BasicDao {
             rs = s.executeQuery("select * from tblnotice ORDER BY id DESC LIMIT 1");
             if(rs.next())  
                 result = userid + collegeid + rs.getInt(1) + filename.substring(filename.lastIndexOf("."));
+            else
+                result = userid + collegeid + "0" + filename.substring(filename.lastIndexOf("."));
         } catch (SQLException ex) {
             Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -312,6 +333,24 @@ public class BasicDao {
         }
         return "error fatal";
     }
+    public static boolean isSpecialUser(Connection con,String uniqueid, int collegecode) {
+        Statement s = null;
+        ResultSet rs = null;
+        boolean special = false;
+        try {
+            s = con.createStatement();
+            rs = s.executeQuery("select * from tblspecial where uniqueid='" + uniqueid + "' and collegecode='" + collegecode + "' and status='1'");
+            if(rs.next())
+                special = true;
+        } catch (SQLException ex) {
+            Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        finally {
+            try { rs.close(); } catch(Exception e) { }
+            try { s.close(); } catch(Exception e) { }
+            return special;
+        }
+    }
     public static String requestSpecialPermission(Connection con, String uniqueid, int collegecode) {
         try {
             Statement s = con.createStatement();
@@ -325,14 +364,14 @@ public class BasicDao {
                 else if(status==-1)
                     return "request rejected by admin, please contact admin for solution";
                 else
-                    return "you have already requested";
+                    return "you have already requested, please send email at saurabhshalu@gmail.com with all your valid documents to get special rights asap";
             }
             else {
                 int i = s.executeUpdate("insert into tblspecial(uniqueid,collegecode,status) values('" + uniqueid + "', '" + collegecode + "', '0')");
                 try { rs.close(); } catch(Exception e) { }
                 try { s.close(); } catch(Exception e) { }
                 if(i==1) {
-                    return "your request has been registered";
+                    return "your request has been registered, please send email at saurabhshalu@gmail.com with all your valid documents to get special rights asap";
                 }
                 else{
                     return "something bad happened, please take screenshot and report to admin";

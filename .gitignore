@@ -27,3 +27,4 @@ src/java/utils/DBConnection.java
 
 #build directory
 build/*
+/dist/

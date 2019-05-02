@@ -4,6 +4,7 @@
 <%@page import="java.sql.Connection"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="Dao.BasicDao"%>
+<div class="noticecontainer">
 <div class="table-responsive">
     <table class="table table-condensed table-hover">
         <tbody>
@@ -41,4 +42,5 @@
             %>
         </tbody>
     </table>
+</div>
 </div>

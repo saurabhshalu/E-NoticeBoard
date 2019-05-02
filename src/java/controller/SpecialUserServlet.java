@@ -26,22 +26,28 @@ public class SpecialUserServlet extends HttpServlet {
         HttpSession session = request.getSession(); 
         response.setContentType("text/plain");
         if(session.getAttribute("uniqueid")!=null) {
-            String approve = request.getParameter("approve");
-            String reject = request.getParameter("reject");
-            if(request.getParameter("approve")!=null) {
-                String result = BasicDao.approvePrimeMember(con,approve);
-                response.getWriter().print(result);
-                return;
+            switch (session.getAttribute("logintype").toString()) {
+                case "admin":
+                    String approve = request.getParameter("approve");
+                    String reject = request.getParameter("reject");
+                    if(request.getParameter("approve")!=null) {
+                        String result = BasicDao.approvePrimeMember(con,approve);
+                        response.getWriter().print(result);
+                    }
+                    else if(request.getParameter("reject")!=null) {
+                        String result = BasicDao.rejectPrimeMember(con, reject);
+                        response.getWriter().print(result);
+                    }
+                    else {
+                        response.getWriter().print("not authorized");
+                    }   break;
+                case "professor":
+                    String result = BasicDao.requestSpecialPermission(con,session.getAttribute("uniqueid").toString(), Integer.parseInt(session.getAttribute("collegecode").toString()));
+                    response.getWriter().print(result);
+                    break;
+                default:
+                    response.getWriter().print("not authorized");
             }
-            else if(request.getParameter("reject")!=null) {
-                String result = BasicDao.rejectPrimeMember(con, reject);
-                response.getWriter().print(result);
-                return;
-            }
-            else {
-                String result = BasicDao.requestSpecialPermission(con,session.getAttribute("uniqueid").toString(), Integer.parseInt(session.getAttribute("collegecode").toString()));
-                response.getWriter().print(result);
-            }   
         }
         else {
             response.getWriter().print("please login to continue");

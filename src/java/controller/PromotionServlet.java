@@ -17,7 +17,7 @@ public class PromotionServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if(session.getAttribute("uniqueid")!=null) {
         Connection con = MyUtils.getStoredConnection(request);
-        if(BasicDao.requestSpecialPermission(con,session.getAttribute("uniqueid").toString(), Integer.parseInt(session.getAttribute("collegecode").toString())).contains("success")) 
+        if(BasicDao.isSpecialUser(con,session.getAttribute("uniqueid").toString(), Integer.parseInt(session.getAttribute("collegecode").toString()))) 
             request.getRequestDispatcher("./WEB-INF/promotefiles/searchbox.jsp").forward(request, response);
         else
             response.sendRedirect("./");

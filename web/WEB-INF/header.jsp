@@ -1,6 +1,9 @@
 <%@page import="utils.MyUtils"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="Dao.BasicDao"%>
+<head>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/favicon.ico">
+</head>
 <header>
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
       <div class="container">
@@ -29,7 +32,7 @@
                             <li><a class="nav-link" href="viewnotice?id=all">View all notice</a></li>
                             <% 
                             Connection con = MyUtils.getStoredConnection(request);
-                            if(!BasicDao.requestSpecialPermission(con,session.getAttribute("uniqueid").toString(), Integer.parseInt(session.getAttribute("collegecode").toString())).contains("success")) {%>
+                            if(!BasicDao.isSpecialUser(con,session.getAttribute("uniqueid").toString(), Integer.parseInt(session.getAttribute("collegecode").toString()))) {%>
                                 <li><a class="nav-link" href="#" id="requestprime">Request Rights</a></li>
                             <% 
                             } else {
@@ -42,7 +45,7 @@
                     <%        
                         } else {
                     %> 
-                    <li><a class="nav-link" href="#">Submit Assignment</a></li>
+                    <li><a class="nav-link" href="#" onclick="showAlert('Professor will share google drive link on notice board, kindly upload your assignment there only!')">Submit Assignment</a></li>
                     <%        
                         } 
                     %> 

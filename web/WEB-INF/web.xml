@@ -3,16 +3,6 @@
     <filter>
         <filter-name>FilterRequest</filter-name>
         <filter-class>filters.RequestFilter</filter-class>
-        <!--
-        <init-param>
-            <param-name>excludedUrls</param-name>
-            <param-value>/login,/dashboard,/logout,/register,/developers,/notice,/index.jsp</param-value>
-        </init-param>
-        <init-param>
-            <param-name>excludedStartWith</param-nam3e>
-            <param-value>/css/,/js/,/img/</param-value>
-        </init-param>
-        -->
     </filter>
     <filter-mapping>
         <filter-name>FilterRequest</filter-name>
@@ -135,4 +125,7 @@
             30
         </session-timeout>
     </session-config>
+    <error-page>
+        <location>/error.jsp</location>
+    </error-page>
 </web-app>

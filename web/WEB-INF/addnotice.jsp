@@ -3,7 +3,6 @@
 <%@page import="Dao.BasicDao"%>
 <%@page import="java.sql.ResultSet"%>
 <div class="noticecontainer">
-    
     <%
         String logintype = session.getAttribute("logintype").toString();
         if(logintype.equals("professor")) {
