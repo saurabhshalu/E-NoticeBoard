@@ -6,6 +6,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DBConnection {
+	/*
+	 * 
+	 *  use the git command :
+	 *  <git update-index --assume-unchanged "src/utils/DBConnection.java"> to ignore the changes of this file
+	 *  <git update-index --no-assume-unchanged "src/utils/DBConnection.java"> to back it normal
+	 * 
+	 */
     public static Connection getMySQLConnection() {
     	String hostName = "localhost:3308";
         String dbName = "dbnotice";
