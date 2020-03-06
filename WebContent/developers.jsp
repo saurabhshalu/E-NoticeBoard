@@ -20,7 +20,7 @@
                     <section class="card">
                         <img class="card_img" src="${pageContext.request.contextPath}/img/saurabh.jpg" alt="Saurabh" style="width:100%">
                         <h1 class="cardblack">Saurabh Verma</h1>
-                        <p class="cardtitle">CEO & Founder, Developer</p>
+                        <p class="cardtitle">CEO &amp; Founder, Developer</p>
                         <p class="cardblack">Google</p>
                         <p><button class="cardbutton" onclick="window.open('https://www.instagram.com/saurabh_shalu','_blank')">Contact</button></p>
                     </section>
