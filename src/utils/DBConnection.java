@@ -14,10 +14,10 @@ public class DBConnection {
 	 * 
 	 */
     public static Connection getMySQLConnection() {
-    	String hostName = "localhost:3308";
-        String dbName = "dbnotice";
-        String userName = "root";
-        String password = "";
+    	String hostName = "localhost:3308"; //"sql12.freemysqlhosting.net:3306"
+        String dbName = "dbnotice"; //database name
+        String userName = "root"; //database user
+        String password = ""; //database password
         
         return getMySQLConnection(hostName, dbName, userName, password);
     }
