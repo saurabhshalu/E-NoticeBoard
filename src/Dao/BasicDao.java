@@ -18,17 +18,20 @@ public class BasicDao {
     public static ResultSet getBranchList(Connection con) {
         Statement s = null;
         ResultSet rs = null;
-        try {
+        try
+        {
             s = con.createStatement();
             rs = s.executeQuery("select * from tblbranch");
-        } catch (SQLException ex) {
+        } catch (SQLException ex) 
+        {
             Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        finally {
+        finally 
+        {
             //try { rs.close(); } catch(Exception e) { }
             //try { s.close(); } catch(Exception e) { }
-            return rs;
-        }    
+        }  
+        return rs;
     }
     public static ResultSet getCollegeList(Connection con) {
         ResultSet rs = null;
@@ -41,8 +44,8 @@ public class BasicDao {
         finally {
             //try { rs.close(); } catch(Exception e) { }
             //try { s.close(); } catch(Exception e) { }
-            return rs;
         }
+        return rs;
     }
     public static ResultSet FilterStudent(Connection con, String semester, String branch, String college) {
         ResultSet rs = null;
@@ -52,9 +55,7 @@ public class BasicDao {
         } catch (SQLException ex) {
             Logger.getLogger(BasicDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        finally {
-            return rs;
-        }
+        return rs;
     }
     
     public static boolean isValidSemester(String n) {
@@ -126,8 +127,8 @@ public class BasicDao {
         finally {
             try { rs.close(); } catch(Exception e) { }
             try { s.close(); } catch(Exception e) { }
-            return valid;
         }
+        return valid;
     }
     public static boolean isValidCollege(Connection con, String n) {
         Statement s = null;
@@ -144,8 +145,8 @@ public class BasicDao {
         finally {
             try { rs.close(); } catch(Exception e) { }
             try { s.close(); } catch(Exception e) { }
-            return valid;
         }
+        return valid;
     }
     
     public static ResultSet getLoggedInUserData(Connection con,String logintype,String id) {
@@ -161,8 +162,8 @@ public class BasicDao {
         finally {
             //try { s.close(); } catch(Exception e) { }
             //try { con.close(); } catch(Exception e) { }
-            return rs;
         }
+        return rs;
     }
     
     public static List<NoticeBean> getCurrentTeacherNotice(Connection con, int collegecode, String uniqueid, String view) {
@@ -197,8 +198,8 @@ public class BasicDao {
         finally {
             try { rs.close(); } catch(Exception e) { }
             try { s.close(); } catch(Exception e) { }
-            return list;
         }
+        return list;
     }
     public static List<NoticeBean> getCurrentStudentNotice(Connection con, int collegecode, int semester, int branchcode) {
         Statement s = null;
@@ -229,8 +230,8 @@ public class BasicDao {
         finally {
             try { rs.close(); } catch(Exception e) { }
             try { s.close(); } catch(Exception e) { }
-            return list;
         }
+        return list;
     }
     public static boolean deleteSelectedNotice(Connection con, String deleteid,String collegecode, String logintype, String professorcode) {
         Statement s = null;
@@ -249,8 +250,8 @@ public class BasicDao {
         }
         finally {
             try { s.close(); } catch(Exception e) { }
-            return status;
         }
+        return status;
     }
     public static NoticeBean previewSelectedNotice(Connection con, int noticeid,int collegecode, String logintype, int semester, int branchcode) {
         Statement s = null;
@@ -285,8 +286,8 @@ public class BasicDao {
         finally {
             try { rs.close(); } catch(Exception e) { }
             try { s.close(); } catch(Exception e) { }
-            return current;
         }
+        return current;
     }
     
     public static String getFileName(Connection con, String filename, int collegeid, String userid) {
@@ -306,8 +307,8 @@ public class BasicDao {
         finally {
             try { rs.close(); } catch(Exception e) { }
             try { s.close(); } catch(Exception e) { }
-            return result;
         }
+        return result;
     }
     public static String approvePrimeMember(Connection con, String code) { 
         try {
@@ -350,8 +351,8 @@ public class BasicDao {
         finally {
             try { rs.close(); } catch(Exception e) { }
             try { s.close(); } catch(Exception e) { }
-            return special;
         }
+        return special;
     }
     public static String requestSpecialPermission(Connection con, String uniqueid, int collegecode) {
         try {
@@ -397,8 +398,8 @@ public class BasicDao {
         finally {
             //try { s.close(); } catch(Exception e) { }
             //try { con.close(); } catch(Exception e) { }
-            return rs;
         }
+        return rs;
     }
     
     public static int promoteSelectedStudent(Connection con, String list, String collegecode) {
@@ -413,8 +414,8 @@ public class BasicDao {
         finally {
             try { s.close(); } catch(Exception e) { }
             //try { con.close(); } catch(Exception e) { }
-            return rows;
         }
+        return rows;
     }
 }
 
