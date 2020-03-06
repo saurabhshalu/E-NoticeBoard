@@ -13,12 +13,12 @@
                 String uniqueid = null;
                 int semester = -999;
                 int branchcode = -999;
-                String logintype = request.getParameter("logintype");
+                String ltype = session.getAttribute("logintype").toString();// request.getParameter("logintype");
                 String view = request.getParameter("view");
                 if(view==null)
                     view = "none";
                 
-                if(logintype.equals("student")) {
+                if(ltype.equals("student")) {
                     semester = Integer.parseInt(session.getAttribute("semester").toString());
                     branchcode = Integer.parseInt(session.getAttribute("branchcode").toString());
                 }
@@ -28,7 +28,7 @@
                 
                 List<NoticeBean> noticelist = null;
                 Connection con = MyUtils.getStoredConnection(request);
-                if(logintype.equals("student"))
+                if(ltype.equals("student"))
                     noticelist = BasicDao.getCurrentStudentNotice(con,collegecode,semester,branchcode);
                 else
                     noticelist = BasicDao.getCurrentTeacherNotice(con,collegecode,uniqueid,view);

@@ -25,7 +25,7 @@
 			<div class="form-group">
 				<div class="input-group">
 					<select id="semester" class="form-control">
-						<option selected disabled hidden value="-1">Select
+						<option selected disabled hidden="hidden" value="-1">Select
 							semester</option>
 						<option value="0">All</option>
 						<option value="1">Semester 1</option>
@@ -38,7 +38,7 @@
 						<option value="8">Semester 8</option>
 					</select> <span class="input-group-addon">-</span> <select id="branch"
 						class="form-control">
-						<option selected disabled hidden value="0">Select branch</option>
+						<option selected disabled hidden="hidden" value="0">Select branch</option>
 						<%
                             Connection con = MyUtils.getStoredConnection(request);
                             ResultSet rs = BasicDao.getBranchList(con);
@@ -73,9 +73,7 @@
         }
     %>
 	<div class="rightnotice">
-		<jsp:include page="./WEB-INF/allnoticelist.jsp"> <!--  if page="whatever" not working, then replace it with page="allnoticelist.jsp" -->
-			<jsp:param name="logintype" value="<%=logintype%>" />
-		</jsp:include>
+		<%@include file="allnoticelist.jsp"%>
 	</div>
 </div>
 <br />

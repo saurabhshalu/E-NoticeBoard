@@ -22,7 +22,7 @@
                         <h1 class="cardblack">Saurabh Verma</h1>
                         <p class="cardtitle">CEO &amp; Founder, Developer</p>
                         <p class="cardblack">Google</p>
-                        <p><button class="cardbutton" onclick="window.open('https://www.instagram.com/saurabh_shalu','_blank')">Contact</button></p>
+                        <p><button class="cardbutton" onclick="window.open('https://github.com/saurabhshalu','_blank')">Contact</button></p>
                     </section>
                 </div>
             </div>

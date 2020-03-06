@@ -9,7 +9,7 @@
 			<form>
 				<div class="input-group">
 					<select id="branch" class="form-control">
-						<option selected disabled hidden value="0">Select branch</option>
+						<option selected disabled hidden="hidden" value="0">Select branch</option>
 						<%
                         Connection con = MyUtils.getStoredConnection(request);
                         ResultSet rs = BasicDao.getBranchList(con);
@@ -25,7 +25,7 @@
                     %>
 					</select> <span class="input-group-addon">-</span> <select id="semester"
 						class="form-control">
-						<option selected disabled hidden value="0">Select
+						<option selected disabled hidden="hidden" value="0">Select
 							semester</option>
 						<option value="1">Semester 1</option>
 						<option value="2">Semester 2</option>
