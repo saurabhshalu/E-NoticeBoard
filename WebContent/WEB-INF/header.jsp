@@ -24,6 +24,9 @@
 				</ul>
 
 				<ul class="navbar-nav ml-auto">
+					<%
+						if(!request.getRequestURI().contains("developer")){
+					%>
 					<li class="dropdown">
 						<% if(session.getAttribute("uniqueid")!=null) { %> <a
 						class="dropdown-toggle nav-link" data-toggle="dropdown" href="#">Welcome
@@ -59,6 +62,9 @@
 						</ul> <% } else { %> <a id="register" class="btnSignUp nav-link" href="#">Sign
 							Up</a> <% }%>
 					</li>
+					<%
+						}
+					%>
 					<li class="nav-item">
 						<% if(session.getAttribute("uniqueid")!=null) { %> <a id="logout"
 						class="nav-link" href="#">Logout</a> <% } else { %> <a id="login"
