@@ -15,9 +15,9 @@ public class DBConnection {
 	 */
     public static Connection getMySQLConnection() {
     	String hostName = "localhost:3308"; //"sql12.freemysqlhosting.net:3306"
-        String dbName = "dbnotice"; //database name
-        String userName = "root"; //database user
-        String password = ""; //database password
+        String dbName = "dbnotice"; //vs3rocks_db
+        String userName = "root"; //vs3rocks_user
+        String password = ""; //vs3rocks_password
         
         return getMySQLConnection(hostName, dbName, userName, password);
     }
