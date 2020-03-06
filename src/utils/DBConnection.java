@@ -7,16 +7,11 @@ import java.util.logging.Logger;
 
 public class DBConnection {
     public static Connection getMySQLConnection() {
-        /*
     	String hostName = "localhost:3308";
         String dbName = "dbnotice";
         String userName = "root";
         String password = "";
-        */
-        String hostName = "sql12.freemysqlhosting.net:3306";
-        String dbName = "sql12325784";
-        String userName = "sql12325784";
-        String password = "qrZIr9ddcU";
+        
         return getMySQLConnection(hostName, dbName, userName, password);
     }
     public static Connection getMySQLConnection(String hostName, String dbName, String userName, String password) {
