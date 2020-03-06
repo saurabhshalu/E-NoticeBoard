@@ -1,0 +1,203 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+#mainContainerCss {
+    min-height: 100%;
+    background: url('../img/showcase.jpg') no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+#mainContainerCss:before {
+    content: "";
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+#mainContentCss {
+    overflow: auto;
+    padding-top: 60px; /*height of navbar*/
+    padding-bottom: 60px; /*height of footer*/
+    background-color: transparent;
+}
+#footer {
+    position: relative; /*optional if we apply bootstrap class */
+    height: 60px;
+    margin-top: -60px;
+    clear: both;
+}
+img {
+  width: 100%;
+}
+
+.form-control::placeholder {
+  color: #bbb !important;
+}
+
+.cards {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+   align-items: center;
+}
+.card {
+  flex: 0 0 300px;
+  min-width: 300px;
+  background: #f2f2f2;
+  border-radius: 7px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px 10px 50px 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  font-family: arial;
+  height: 490px;
+}
+.cardblack {
+    color:black;
+}
+.cardtitle {
+    color: grey;
+    font-size: 18px;  
+}
+
+.noticecard {
+    height: auto;
+    padding: 5px;
+    margin: 10px;
+    flex: 1;
+    max-width: 600px;
+}
+.noticecard p {
+    margin: 3px;
+}
+
+.cardbutton {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    color: white;
+    background-color: #000;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+}
+.card_img {
+    border-radius: 7px;
+}
+.cardbutton:hover, a:hover {
+    opacity: 0.7;
+}
+.noticecontainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+.leftnotice {
+    flex: 1;
+    min-width: 300px;
+    height: 440px;
+    max-height: 440px;
+    padding-top: 10px;
+    background: rgba(0,0,0,0.5);
+    border: 2px solid #343a40;
+    border-radius: 7px; 
+}
+.rightnotice {
+    min-width: 300px;
+    height: 440px;
+    max-height: 440px;
+    flex: 2;
+    padding: 10px;
+    background: rgba(0,0,0,0.5);
+    border: 2px solid #343a40;
+    border-radius: 7px;
+}
+#myNoticeForm {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+table {
+    border-radius: 7px;
+}
+td {
+    line-height: 10px;
+}
+.table-responsive {
+    max-height: 420px;
+}
+.preview_data_id_notice {
+    cursor: pointer;
+}
+
+#custom-alert {
+    position: absolute;
+    width: 300px;
+    height: auto;
+    left: 50%;
+    top: 50%;
+    margin-left: -150px;
+}
+
+
+/* Loader animation */
+
+.loader_full{
+  width: 36px;
+  height: 36px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  margin-top: -18px;
+  margin-left: -18px;
+  z-index: 5 
+}
+
+#loader-spinner span{
+  display: inline-block;
+  width: 5px;
+  height: 20px;
+  background-color: white;
+}
+
+#loader-spinner span:nth-child(1){
+  animation: grow 1s ease-in-out infinite;
+}
+
+#loader-spinner span:nth-child(2){
+  animation: grow 1s ease-in-out 0.15s infinite;
+}
+
+#loader-spinner span:nth-child(3){
+  animation: grow 1s ease-in-out 0.30s infinite;
+}
+
+#loader-spinner span:nth-child(4){
+  animation: grow 1s ease-in-out 0.45s infinite;
+}
+
+@keyframes grow{
+  0%, 100%{
+    -webkit-transform: scaleY(1);
+    -ms-transform: scaleY(1);
+    -o-transform: scaleY(1);
+    transform: scaleY(1);
+  }
+
+  50%{
+    -webkit-transform: scaleY(1.8);
+    -ms-transform: scaleY(1.8);
+    -o-transform: scaleY(1.8);
+    transform: scaleY(1.8);
+  }
+}
+/* close loader animation */
