@@ -1,5 +1,5 @@
 # E-NoticeBoard
-E-Notice board is a web application to help college!
+E-Notice board is a web application to help the college students and professors!
 
 #Modify a file "DBConnection.java" in package 'utils' with all the details of mysql database
 #Create mysql database dbnotice and import the given intialsetup.sql file!
